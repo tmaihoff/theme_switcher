@@ -8,6 +8,10 @@ part 'theme_cubit.g.dart';
 part 'theme_state.dart';
 
 class ThemeCubit extends HydratedCubit<ThemeState> {
+  /// Cubit for changing and accessing app theme mode.
+  ///
+  /// When using this, call `await initialize_hydrated_bloc()`
+  /// before `runApp()`.
   ThemeCubit() : super(ThemeState.light());
 
   void setTheme(ThemeState themeState) => emit(themeState);

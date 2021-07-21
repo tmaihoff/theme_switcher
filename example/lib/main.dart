@@ -1,35 +1,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:theme_switcher/cubit/theme_cubit.dart';
+import 'package:theme_switcher/theme_switcher.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb
-        ? HydratedStorage.webStorageDirectory
-        : await getTemporaryDirectory(),
-  );
+  await initializeHydratedBloc();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ThemeCubit(),
-      child: Builder(
-        builder: (context) => BlocBuilder<ThemeCubit, ThemeState>(
-          builder: (context, state) => MaterialApp(
-            title: 'Flutter Demo',
-            theme: ThemeData(),
-            darkTheme: ThemeData.dark(),
-            themeMode: state.mode,
-            home: MyHomePage(title: 'Flutter Demo Home Page'),
-          ),
-        ),
+    return ThemeCubitProvider(
+      builder: (context, themeState) => MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(),
+        darkTheme: ThemeData.dark(),
+        themeMode: themeState.mode,
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }
